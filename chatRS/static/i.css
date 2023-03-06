@@ -1,0 +1,43 @@
+.container{
+    border: 2.5px solid blueviolet;
+}
+.inpele{
+    font-size: 15px;
+}
+.inplab{
+    font-size: 18.5px;
+}
+.box-1{
+    background-color: gainsboro;
+    height: 8%;
+}
+.box-2{
+    height: 83%;
+}
+.box-3{
+    background-color: pink;
+    height: 16.5%;
+}
+.box-4{
+    width: 5%;
+}
+.box-5{
+    background-color: gray;
+    width: 90%;
+}
+.box-6{
+    background-color: purple;
+    width: 5%;
+}
+
+textarea{
+    resize: none;
+    border: solid 2px gray;
+    outline: none;
+}
+
+.msg{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}

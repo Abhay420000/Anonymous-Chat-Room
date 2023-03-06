@@ -1,0 +1,342 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'i.css' %}">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="{% static 'ix.js' %}" defer></script>
+
+
+    <title>Anonymous Chat Rooms</title>
+  </head>
+  <body style="overflow: hidden; background-image: url('{% static "chat.png" %}'); background-repeat: no-repeat; background-size: cover;  background-size: 100% 100%;">
+
+    <!--Home-->
+    <div class="container-flex vh-100" id="home" style="display: block;">
+        <div class="row box-1">
+          <nav class="navbar navbar-expand-lg navbar-light h-100">
+            <div class="container-fluid h-100">
+              <div class="d-flex justify-content-between align-items-center w-100 h-100">
+                <a class="nav-link mx-2" href="#" style="font-size: 20px;">FAQ's?</a>
+                <div class="h-100 d-flex justify-content-between align-items-center">
+                  <div class="vr me-2 h-100" style="width: 5px;"></div>
+                  <div class="navbar-brand me-0" style="font-size: 25px;font-weight: bold; display:inline;">Anonymous Chat Rooms</div>
+                  <div class="vr ms-2 h-100" style="width: 5px;"></div>
+                </div>
+                <a class="nav-link mx-2" href="#" style="font-size: 20px;">Help?</a>
+              </div>
+            </div>
+          </nav>
+        </div>
+        <div class="row box-2">
+          <div class="d-none d-md-inline" style="width: 25%;">
+            
+          </div>
+          <div class="col d-flex justify-content-center">
+            <div class="align-self-center p-3" style="background-color: rgb(201, 201, 192); border-radius: 12px;">
+              <div class="d-flex justify-content-around">
+                <div>
+                  <label class="inplab" for="name">Name</label><br>
+                  <label class="inplab" for="lang">Language</label><br>
+                  <label class="inplab" for="cont">Countary</label><br>
+                  <label class="inplab" for="rsize">Room Size</label><br>
+                </div>
+                <div>
+                <input class="inpele" type="text" id="name" name="name"><br>
+                <input class="inpele" type="text" id="lang" name="lang"><br>
+                <input class="inpele" type="text" id="cont" name="cont"><br>
+                <select class="inpele" id="rsize" name="rsize">
+                  <option value="2">2 Members</option>
+                  <option value="5">5 Members</option>
+                  <option value="10">10 Members</option>
+                </select><br>
+                </div>
+              </div>
+              <br>
+                <input type="checkbox" id="accept" name="accept" value="accept">                                                  
+                <label for="accept">Accept <a href="#" onclick="display_toc()">Term and Conditions</a> and <a href="#" onclick="display_pp()">Privicy Policy</a></label><br>
+              <br>
+              <div class="d-flex justify-content-around">
+                <button class="btn btn-primary" onclick="start_chat()">Create Room</button>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rcode" >Have room code?</button>
+              </div>
+            </div>
+          </div>
+          <div class="d-none d-md-inline" style="width: 25%;">
+            
+          </div>
+        </div>
+        <div class="row bg-light pb-5">
+          <div class="d-flex justify-content-center">
+            Contract Us:&nbsp;<a href="mailto:abhaykumar420000@example.com">abhaykumar420000@example.com</a>
+          </div>
+          <div class="d-flex justify-content-center">
+            © 2022 Abhay Kumar, Inc
+          </div>
+        </div>
+    </div>
+
+    <!--Chat-->
+    <div class="container-flex vh-100" id="chat" style="display: none;">
+      <div class="row box-1">
+      
+        <div class="align-self-center ps-3" style="width:fit-content;">
+          <button type="button" class="btn btn-light h-75 w-100" id = "back_btn" onclick="back_home()">Back</button>
+        </div>
+      
+        <div class="align-self-center px-0 px-md-3" style="width:fit-content;">
+          <button type="button" class="btn btn-success h-75 w-100" id="room_status" onclick="change_status(1)">Open</button>
+        </div>
+      
+        <div class="col d-flex justify-content-center align-self-center px-1 px-md-3" style="font-size: 24px; font-weight: bold;">
+          <div class="row">
+            <div class="align-self-center px-0 px-md-1 d-none d-sm-inline" style="width:fit-content;">                            
+              Room Code:
+            </div>
+            <div class="align-self-center px-1 px-sm-0 px-md-1" style="width:fit-content;">
+              XXXXX
+            </div>
+            <div class="col align-self-center ps-0">
+              <button>
+                <i class="fa fa-clone" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      
+        <div class="align-self-center px-0 px-md-3" style="width:fit-content;">
+          <button type="button" class="btn btn-outline-dark" onclick="show_members()">
+            <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> 4/5
+          </button>
+        </div>
+      
+        <div class="align-self-center px-2 px-md-3" style="width:fit-content; font-size: 25px;">
+          <button>
+            <i class="fa fa-cog" aria-hidden="true"></i>
+          </button>
+        </div>
+      
+        <div class="align-self-center pe-3 ps-0 ps-md-3" style="width:fit-content;">
+          <button type="button" class="btn btn-light h-75 w-100">Invite</button>
+        </div>
+      
+      </div>
+      <div class="row box-2" style="background-image: url('{% static "wbg.png" %}');">
+        <div class="col" id="fill_msg" style="height: 100%; overflow-y:scroll;">
+          <!--Messages-->
+        </div>
+      </div>
+      <div class="row box-3 bg-light pb-5 p-1">
+          <div class="d-flex justify-content-star w-100 h-100">
+            <textarea class="h-75 w-75 align-self-center" type="text" id="msg_to_send"></textarea>
+            <button class="h-75 w-25 ms-1 align-self-center" onclick="my_msg()">Send</button>                
+          </div>
+      </div>
+    </div>
+
+    <!--Privacy Policy-->
+    <div class="container-flex vh-100" id="pp" style="display: none;">
+      <div class="row box-1">
+  
+        <div class="align-self-center ps-3" style="width:fit-content;">
+          <button type="button" class="btn btn-light h-75 w-100" onclick="back_home()">Back</button>
+        </div>
+  
+        <div class="col d-flex justify-content-center align-self-center px-1 px-md-3" style="font-size: 24px; font-weight: bold;">
+          <div class="row">
+            <div class="align-self-center pe-1" style="width:fit-content;">
+              Privacy Policy
+            </div>
+          </div>
+        </div>
+  
+        <div class="align-self-center pe-3 ps-0 ps-md-3" style="width:fit-content;">
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+        </div>
+  
+      </div>
+      <div class="row" style="background-color:azure; height: 92%; font-family: -apple-system, helvetica neue, Helvetica, Arial, lucida grande, sans-serif; color: rgb(31, 31, 33);">
+        <div class="col px-5" style="height:100%; white-space: pre-wrap; overflow-y:scroll;">Privacy Policy
+  
+  Who we are?
+  Anonymous Chat Rooms is operated by Kumar's LLC, a company registered in India at 2003.
+  
+  INTRODUCTION
+  We strongly believe in protecting the privacy of individuals who visit our website and use our products and services (collectively, the “Terms of Service”). This Policy explains how we collect, use, disclose, and protect information that applies to our Service, and your choices about the collection and use of your personal and other information.
+  For purposes of this Policy, personal information means information relating to an identified or identifiable natural person. An identifiable person is one who can be identified, directly or indirectly, in particular by reference to an identifier such as a name, an identification number, location data, and online identifier or to one or more factors specific to his/her physical, physiological, genetic, mental, economic, cultural or social identity.
+  
+  1. Shares your data
+  Anonymous Chat Rooms never shares you data with third parties.
+  
+  2. Storing data
+  All the messages are self-destructing within few weeks.
+  
+  3. Not intended for use by children
+  Anonymous Chat Rooms is not directed at children who are under thirteen (13) years of age and We do not knowingly collect personal or other information from such children. If you are younger than thirteen (13) years of age, you should not use Our application and if you are between the ages of thirteen (13) and eighteen (18) you must have parental consent and you should not provide any personal identifiable information while using Anonymous Chat Rooms without said parental consent.
+  
+  4. How to contact us
+  If you have any questions about this Privacy Policy or the Terms of Service, please contact us at abhaykumar420000@example.com.
+  
+  5. Changes to our Policy
+  Company may modify or update this Privacy Policy from time to time to reflect the changes in our business and practices, and so you should review this page periodically. When we change the Policy in a material manner we will update the last modified date at the bottom of this page. Your continued use of the Service constitutes your agreement to be bound by such changes to this Policy. Your only remedy, if you do not accept the terms of this Policy, is to discontinue use of the Service.
+  
+  This privacy policy was last modified on October 17, 2022.
+        </div>
+      </div>
+    </div>
+
+    <!--Terms of Service-->
+    <div class="container-flex vh-100" id="toc" style="display: none;">
+      <div class="row box-1">
+  
+        <div class="align-self-center ps-3" style="width:fit-content;">
+          <button type="button" class="btn btn-light h-75 w-100" onclick="back_home()">Back</button>
+        </div>
+  
+        <div class="col d-flex justify-content-center align-self-center px-1 px-md-3" style="font-size: 24px; font-weight: bold;">
+          <div class="row">
+            <div class="align-self-center pe-1" style="width:fit-content;">
+              Terms of service
+            </div>
+          </div>
+        </div>
+  
+        <div class="align-self-center pe-3 ps-0 ps-md-3" style="width:fit-content;">
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+        </div>
+  
+      </div>
+      <div class="row" style="background-color:azure; height: 92%; font-family: -apple-system, helvetica neue, Helvetica, Arial, lucida grande, sans-serif; color: rgb(31, 31, 33);">
+        <div class="col px-5" style="height:100%; white-space: pre-wrap; overflow-y:scroll;">Terms of service
+  
+  This Terms of Service Agreement (hereinafter "Agreement") sets forth the terms and conditions by which we, Kumar's LLC, provide the Anonymous Chat Rooms Application Services to site visitors, users. By visiting our site, using any of the tools and services provided via our site, you thereby agree to be bound by each of the terms and conditions of this Agreement.
+  
+  We may automatically amend this Agreement at any time by informing you of the amended terms. For user to Anonymous Chat Rooms  it is their responsibility to read this Terms of Service each time they access any portion of our site. Any usage of this site by you, including merely viewing our home page or any page published on our site, as an unregistered Anonymous Chat Rooms's user, means that you agree to be bound by each and every one of the terms and conditions of this Terms of Service Agreement.
+  
+  1. General
+  Anonymous Chat Rooms is always striving to improve the Service and bring you additional functionality that you will find engaging and useful. This means we may add new product features or enhancements from time to time as well as remove some features, and if these actions do not materially affect your rights or obligations, we may not provide you with notice before taking them.
+  
+  2. Privacy vs Violations
+  No third parties can access the content you share in the app.
+  Despite the fact that this space is anonymous and secure, users are obliged to follow the rules. We will never support terrorism, pedophilia, violence, underaged users, pornography, bullying or other restrictive behavior.
+  
+  3. Community Rules.
+  By using the Service, you agree that you will not:
+  
+  use the Service for any purpose that is illegal or prohibited by this Agreement.
+  use the Service for any harmful or nefarious purpose.
+  use the Service in order to damage Anonymous Chat Rooms.
+  spam, solicit money from or defraud any users.
+  impersonate any person or entity or post any images of another person without his or her permission.
+  bully, “stalk,” intimidate, assault, harass, mistreat or defame any person.
+  post any Content that violates or infringes anyone’s rights, including rights of publicity, privacy, copyright, trademark or other intellectual property or contract right.
+  post any Content that is hate speech, threatening, sexually explicit or pornographic; incites violence; or contains nudity or graphic or gratuitous violence.
+  post any Content that promotes racism, bigotry, hatred or physical harm of any kind against any group or individual.
+        </div>
+      </div>
+    </div>
+
+    <!--
+    Already have room code.
+    -->
+    <div class="modal fade" id="rcode" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="rcodel">Enter Room Code</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fliud">
+              <div class="row">
+                <label for="yname">Name</label>
+                <input type="text" name="yname" id="yname" required>
+              </div>
+              <div class="row">
+                <label for="rid">Room ID</label>
+                <input type="text" name="rid" id="rid" required>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" onclick="check_room($('#rid')[0].value, 1, $('#yname')[0].value)">Join</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      No room with given code found!
+    -->
+    <div class="modal fade" id="nfound" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Room Not Found!</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Invalid Code! No room exists with the given code.<br>
+            Please check the room code and then try again.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Show Group Members-->
+    <div class="modal-sm fade" id="emembers" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Members</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="container-fluid vh-100" id="loading" style="display: none;">
+      <div class="d-flex justify-content-center vh-100">
+        <div class="d-flex align-items-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
