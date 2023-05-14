@@ -69,7 +69,7 @@ function back_home(){
   document.body.style="overflow: hidden; background-image: url(static/chat.png); background-repeat: no-repeat; background-size: cover;  background-size: 100% 100%;";
 }
 
-function start_chat(){
+function start_chat(args){
   //Accept terms and conditions before creating room
   if ($("#accept")[0].checked == false){
     alert("Please accept Terms and Conditions.");
@@ -84,20 +84,71 @@ function start_chat(){
 
   $("#loading")[0].style.display = "block";//start loading
 
-  //Server Response
-  data = {
-    member_name: $('.inpele')[0].value, 
-    language: $('.inpele')[1].value, 
-    countary: $('.inpele')[2].value, 
-    max_room_size: $('.inpele')[3].value
+  //Client Request- Create Room
+  if (args == "create_room"){
+    data = {
+      'name': $('.inpele')[0].value, 
+      'language': $('.inpele')[1].value, 
+      'country': $('.inpele')[2].value, 
+      'max_room_size': $('.inpele')[3].value,
+      'action': "create room",
+    }
+  } else if (args == "join_room"){
+    data = {
+      'name': $('#yname')[0].value,
+      'room_code': $('#rid')[0].value,
+      'action': 'join room'
+    }
+  } else{
+    alert("Unknown Error Occured!");
+    return;
   }
 
-  res = sendREQ(data);
+  const xhttp = new XMLHttpRequest();
+  xhttp.open("POST", "", true);
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
 
-  $("#loading")[0].style.display = "none";//stop loading
+  var data = JSON.stringify(data);                                                     
+  xhttp.send(data);
 
-  $("#chat")[0].style.display = "block";
-  document.body.style="overflow: hidden;"
+  xhttp.onload = function() {
+    res = JSON.parse(xhttp.responseText);
+    
+    console.log(res);
+    console.log(args);
+    
+    $("#loading")[0].style.display = "none";//stop loading
+    
+    if (args == "create_room") {
+
+      //Display chatting page
+      $("#chat")[0].style.display = "block";
+      $("#room_code")[0].innerHTML = res["room_code"];
+      document.body.style="overflow: hidden;"
+    } else if (args == "join_room"){
+
+      if (res["status"] == "failed"){
+        
+        //Display error message
+        $("#msg_title")[0].innerHTML = "Error!";
+        $("#msg_body")[0].innerHTML = res["msg"];
+        $('#dis_msg').modal('show');
+
+        //Display home page again
+        $("#home")[0].style.display = "block";
+        document.body.style="overflow: hidden; background-image: url(static/chat.png); background-repeat: no-repeat; background-size: cover;  background-size: 100% 100%;";
+        return;
+
+      } else if (res["status"] == "success"){
+        
+        //Display chatting page
+        $("#chat")[0].style.display = "block";
+        $("#room_code")[0].innerHTML = $('#rid')[0].value;
+        document.body.style="overflow: hidden;"
+      }
+    }
+  }
 }
 
 function clean_msg(){
@@ -197,7 +248,7 @@ function check_room(room_code, auto_join, name=null){
   }
   console.log(room_code, auto_join, name);
   $('#rcode').modal('hide');
-  start_chat();
+  start_chat("join_room");
 }
 
 function change_status(me_oth,){
@@ -234,8 +285,6 @@ function sendREQ(data){
   xhttp.send(data);
 
   xhttp.onload = function() {
-    //console.log(xhttp);
-    //console.log(xhttp.responseText);
     res = JSON.parse(xhttp.responseText);
     console.log(res);
   }

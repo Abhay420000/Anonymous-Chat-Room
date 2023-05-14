@@ -49,7 +49,7 @@
                 <div>
                   <label class="inplab" for="name">Name</label><br>
                   <label class="inplab" for="lang">Language</label><br>
-                  <label class="inplab" for="cont">Countary</label><br>
+                  <label class="inplab" for="cont">Country</label><br>
                   <label class="inplab" for="rsize">Room Size</label><br>
                 </div>
                 <div>
@@ -68,7 +68,7 @@
                 <label for="accept">Accept <a href="#" onclick="display_toc()">Term and Conditions</a> and <a href="#" onclick="display_pp()">Privicy Policy</a></label><br>
               <br>
               <div class="d-flex justify-content-around">
-                <button class="btn btn-primary" onclick="start_chat()">Create Room</button>
+                <button class="btn btn-primary" onclick="start_chat('create_room')">Create Room</button>
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rcode" >Have room code?</button>
               </div>
             </div>
@@ -104,7 +104,7 @@
             <div class="align-self-center px-0 px-md-1 d-none d-sm-inline" style="width:fit-content;">                            
               Room Code:
             </div>
-            <div class="align-self-center px-1 px-sm-0 px-md-1" style="width:fit-content;">
+            <div class="align-self-center px-1 px-sm-0 px-md-1" style="width:fit-content;" id="room_code">
               XXXXX
             </div>
             <div class="col align-self-center ps-0">
@@ -289,18 +289,19 @@
     </div>
 
     <!--
-      No room with given code found!
+      Message to display
     -->
-    <div class="modal fade" id="nfound" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="dis_msg" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Room Not Found!</h5>
+            <h5 class="modal-title" id="msg_title">
+              <!-- Message Title -->
+            </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            Invalid Code! No room exists with the given code.<br>
-            Please check the room code and then try again.
+          <div class="modal-body" id="msg_body">
+            <!-- Message Body -->
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
