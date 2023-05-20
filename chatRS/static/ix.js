@@ -1,6 +1,7 @@
-var my_name = "Abhay Kumar";
-var is_admin = false;
+var my_name;
+var my_id;
 var room_status = 1;
+var room_code;
 
 const other_person_cb_1 = `
 <div class="row ps-1 msg-pack">
@@ -59,17 +60,22 @@ function display_pp(){
   document.body.style="overflow: hidden;"
 }
 
-function back_home(){
+function back_home(from){
+  if (from == "chat"){
+    s_chat();
+  }
   for (i=0; i<document.body.children.length; i++){
     document.body.children[i].style.display = "none";
   }
   $("#home")[0].style.display = "block";
 
+
+
   //Backgroud Image chat.png
   document.body.style="overflow: hidden; background-image: url(static/chat.png); background-repeat: no-repeat; background-size: cover;  background-size: 100% 100%;";
 }
 
-function start_chat(args){
+function s_chat(args){
   //Accept terms and conditions before creating room
   if ($("#accept")[0].checked == false){
     alert("Please accept Terms and Conditions.");
@@ -94,10 +100,17 @@ function start_chat(args){
       'action': "create room",
     }
   } else if (args == "join_room"){
+    //Client Request- Join Room
     data = {
       'name': $('#yname')[0].value,
       'room_code': $('#rid')[0].value,
       'action': 'join room'
+    }
+  } else if (args == "leave_room"){
+    data = {
+      "id": Object_Id(),
+      "room_code":  123456,
+      "action": "leave room"
     }
   } else{
     alert("Unknown Error Occured!");
@@ -126,6 +139,12 @@ function start_chat(args){
       $("#chat")[0].style.display = "block";
       $("#room_code")[0].innerHTML = res["room_code"];
       document.body.style="overflow: hidden;"
+
+      //Adjust Variable Names
+      my_name = res["name"]
+      my_id = res["id"]
+      room_code = res["room_code"]
+
     } else if (args == "join_room"){
 
       if (res["status"] == "failed"){
@@ -146,6 +165,11 @@ function start_chat(args){
         $("#chat")[0].style.display = "block";
         $("#room_code")[0].innerHTML = $('#rid')[0].value;
         document.body.style="overflow: hidden;"
+
+        //Adjust Variable Names
+        my_name = res["name"]
+        my_id = res["id"]
+        room_code = res["room_code"]
       }
     }
   }
@@ -248,7 +272,7 @@ function check_room(room_code, auto_join, name=null){
   }
   console.log(room_code, auto_join, name);
   $('#rcode').modal('hide');
-  start_chat("join_room");
+  s_chat("join_room");
 }
 
 function change_status(me_oth,){

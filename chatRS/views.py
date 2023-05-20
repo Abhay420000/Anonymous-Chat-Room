@@ -1,11 +1,12 @@
 from django.shortcuts import render, HttpResponse
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 import json
-from .tools import get_code, check_code, join_room
+from .tools import join_room, create_room, leave_room
 
-@ensure_csrf_cookie
+#@ensure_csrf_cookie
+@csrf_exempt
 def home(request):
-    print(request)
+    print(request.body)
     
     if request.method == "GET":
         return render(request, 'chatRS/index.html')
@@ -16,10 +17,14 @@ def home(request):
         to_send = {}
         
         if (c_req["action"] == "create room"):
-            to_send = {"room_code": get_code(), "name": "Unknown"}
+            rcode = create_room(c_req["max_room_size"])
+            to_send = join_room(rcode, c_req["name"])
             
         elif (c_req["action"] == "join room"):
             to_send = join_room(c_req["room_code"], c_req["name"])
+        
+        elif (c_req["action"] == "leave room"):
+            to_send = leave_room(c_req["id"])
         
         to_send =  json.dumps(to_send)
         return HttpResponse(to_send, content_type="application/json")

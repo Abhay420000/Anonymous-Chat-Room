@@ -68,7 +68,7 @@
                 <label for="accept">Accept <a href="#" onclick="display_toc()">Term and Conditions</a> and <a href="#" onclick="display_pp()">Privicy Policy</a></label><br>
               <br>
               <div class="d-flex justify-content-around">
-                <button class="btn btn-primary" onclick="start_chat('create_room')">Create Room</button>
+                <button class="btn btn-primary" onclick="s_chat('create_room')">Create Room</button>
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rcode" >Have room code?</button>
               </div>
             </div>
@@ -92,7 +92,7 @@
       <div class="row box-1">
       
         <div class="align-self-center ps-3" style="width:fit-content;">
-          <button type="button" class="btn btn-light h-75 w-100" id = "back_btn" onclick="back_home()">Back</button>
+          <button type="button" class="btn btn-light h-75 w-100" id = "back_btn" onclick="back_home('chat')">Back</button>
         </div>
       
         <div class="align-self-center px-0 px-md-3" style="width:fit-content;">
@@ -108,7 +108,7 @@
               XXXXX
             </div>
             <div class="col align-self-center ps-0">
-              <button>
+              <button onclick="navigator.clipboard.writeText($('#room_code')[0].innerHTML);">
                 <i class="fa fa-clone" aria-hidden="true"></i>
               </button>
             </div>
@@ -150,7 +150,7 @@
       <div class="row box-1">
   
         <div class="align-self-center ps-3" style="width:fit-content;">
-          <button type="button" class="btn btn-light h-75 w-100" onclick="back_home()">Back</button>
+          <button type="button" class="btn btn-light h-75 w-100" onclick="back_home('pp')">Back</button>
         </div>
   
         <div class="col d-flex justify-content-center align-self-center px-1 px-md-3" style="font-size: 24px; font-weight: bold;">
@@ -207,7 +207,7 @@
       <div class="row box-1">
   
         <div class="align-self-center ps-3" style="width:fit-content;">
-          <button type="button" class="btn btn-light h-75 w-100" onclick="back_home()">Back</button>
+          <button type="button" class="btn btn-light h-75 w-100" onclick="back_home('tos')">Back</button>
         </div>
   
         <div class="col d-flex justify-content-center align-self-center px-1 px-md-3" style="font-size: 24px; font-weight: bold;">
