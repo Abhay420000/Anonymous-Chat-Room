@@ -2,6 +2,7 @@ var my_name;
 var my_id;
 var room_status = 1;
 var room_code;
+var chatSocket;
 
 const other_person_cb_1 = `
 <div class="row ps-1 msg-pack">
@@ -62,7 +63,7 @@ function display_pp(){
 
 function back_home(from){
   if (from == "chat"){
-    s_chat();
+    s_chat("leave_room");
   }
   for (i=0; i<document.body.children.length; i++){
     document.body.children[i].style.display = "none";
@@ -108,8 +109,8 @@ function s_chat(args){
     }
   } else if (args == "leave_room"){
     data = {
-      "id": Object_Id(),
-      "room_code":  123456,
+      "id": my_id,
+      "room_code":  room_code,
       "action": "leave room"
     }
   } else{
@@ -145,6 +146,9 @@ function s_chat(args){
       my_id = res["id"]
       room_code = res["room_code"]
 
+      //Start Chat
+      start_chatting();
+      
     } else if (args == "join_room"){
 
       if (res["status"] == "failed"){
@@ -170,9 +174,31 @@ function s_chat(args){
         my_name = res["name"]
         my_id = res["id"]
         room_code = res["room_code"]
+
+        //Start Chat
+        start_chatting();
       }
     }
   }
+}
+
+function start_chatting() {
+  console.log(1);
+  chatSocket = new WebSocket(
+      'ws://'
+      + window.location.host
+      + '/ws/chat/'
+      + room_code
+      + '/'
+      + my_id
+      + '/'
+  );
+  
+  chatSocket.onmessage = function (msg) {
+      data = JSON.parse(msg.data);
+      //console.log(data);
+      append_msg(data["msg"], get_ctime(), data["name"]);
+  };
 }
 
 function clean_msg(){
@@ -224,6 +250,10 @@ function my_msg(){
   let msg = $("#msg_to_send")[0].value;
   append_msg(msg, get_ctime(), my_name);
   $("#msg_to_send")[0].value = "";
+
+  //Sending data to server
+  data = {"name": my_name, "msg": msg, "uid": my_id,}
+  chatSocket.send(JSON.stringify(data));
 }
 
 function getCaret(el) { 

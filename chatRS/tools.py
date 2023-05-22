@@ -80,16 +80,15 @@ def create_room(max_room_size):
     return rcode
 
 def leave_room(id, rcode):
-    
     #check if room exists
     data = check_code(rcode)
-    print(data)
+    #print(data)
     if (data == False):
         return {"msg": "failed"}
     else:
         for members in data["online_members"]:
             #Check if request is valid
-            if members == id:
+            if str(members) == id:
                 rooms.update_one(
                     {"_id":rcode}, 
                     {
@@ -97,6 +96,28 @@ def leave_room(id, rcode):
                         "$inc":{"current_room_size":-1}
                     }
                 )
+                
+                name = ""
+                for all_members in data["all_members"]:
+                    if str(all_members[0]) == id:
+                        name = all_members[1]
+                        break
+                    
+                chats.insert_one({
+                    "_id": id, 
+                    "posted_on": datetime.datetime.now(), 
+                    "msg":f"{name} leaved the room!",
+                })
+                
+                #closing the room if no members are their
+                if data["current_room_size"] == 1:
+                    rooms.update_one(
+                        {"_id":rcode}, 
+                        {
+                            "$set": {"status": "offline", "door":"close"},
+                        },
+                    )
+                
                 return {"msg": "success"}
             else:
                 return {"msg": "failed"}

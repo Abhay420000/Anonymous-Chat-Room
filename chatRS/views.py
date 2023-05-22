@@ -23,9 +23,6 @@ def home(request):
         elif (c_req["action"] == "join room"):
             to_send = join_room(c_req["room_code"], c_req["name"])
         
-        elif (c_req["action"] == "leave room"):
-            to_send = leave_room(c_req["id"])
-        
         to_send =  json.dumps(to_send)
         return HttpResponse(to_send, content_type="application/json")
     
