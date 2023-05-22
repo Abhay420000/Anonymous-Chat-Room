@@ -108,11 +108,17 @@ function s_chat(args){
       'action': 'join room'
     }
   } else if (args == "leave_room"){
+    `
     data = {
       "id": my_id,
       "room_code":  room_code,
       "action": "leave room"
     }
+    `
+    //Closeing websocket
+    chatSocket.close()
+    return;
+
   } else{
     alert("Unknown Error Occured!");
     return;

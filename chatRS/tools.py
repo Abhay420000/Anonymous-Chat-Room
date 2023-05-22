@@ -51,7 +51,7 @@ def join_room(rcode, name):
                     name = random.choice(["Tom", "Jerry", "Max", "Mango", "Patato"])
                 id = ObjectId()
                 chats.insert_one({
-                    "_id": id, 
+                    "uid": id, 
                     "posted_on": datetime.datetime.now(), 
                     "msg":f"{name} joined the room!",
                 })
@@ -104,7 +104,7 @@ def leave_room(id, rcode):
                         break
                     
                 chats.insert_one({
-                    "_id": id, 
+                    "uid": id, 
                     "posted_on": datetime.datetime.now(), 
                     "msg":f"{name} leaved the room!",
                 })
@@ -121,3 +121,20 @@ def leave_room(id, rcode):
                 return {"msg": "success"}
             else:
                 return {"msg": "failed"}
+
+def save_chat(uid, rcode, msg):
+    data = check_code(rcode)
+    
+    #Check if request is valid
+    for members in data["online_members"]:
+        if str(members) == uid:
+            
+            chats.insert_one({
+                "uid": uid, 
+                "posted_on": datetime.datetime.now(), 
+                "msg": msg,
+            })
+            
+            return "success"
+        
+    return "error"
