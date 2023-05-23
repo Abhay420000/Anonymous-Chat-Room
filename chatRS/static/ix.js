@@ -43,6 +43,13 @@ const me_cb_3 = `
 </div>
 <br>`;
 
+const lj_msg_1 = `<center>
+<div class="d-flex justify-content-center w-75 msg" style="background-color: white;">`;
+//Left or Join Message
+const lj_msg_2 = `</div>
+</center>
+<br>`;
+
 function display_toc(){
   //Used to display terms of conditions page
   for (i=0; i<document.body.children.length; i++){
@@ -203,7 +210,17 @@ function start_chatting() {
   chatSocket.onmessage = function (msg) {
       data = JSON.parse(msg.data);
       //console.log(data);
-      append_msg(data["msg"], get_ctime(), data["name"]);
+      if (data["type"] == "chat_message"){
+        append_msg(data["msg"], get_ctime(), data["name"]);
+      } else if(data["type"] == "leave_message"){
+        lj_msg(data["name"], "leave");
+      }
+      else if(data["type"] == "join_message"){
+        lj_msg(data["name"], "join");
+      }
+      else{
+        console.log("error!");
+      }
   };
 }
 
@@ -231,6 +248,14 @@ function get_ctime(){
   }
   else{
     return hr+":"+min;
+  }
+}
+
+function lj_msg(name, status) {
+  if (status == "join"){
+    $("#fill_msg").append(lj_msg_1+name+" joined the room!"+lj_msg_2);
+  } else{
+    $("#fill_msg").append(lj_msg_1+name+" left the room!"+lj_msg_2);
   }
 }
 
