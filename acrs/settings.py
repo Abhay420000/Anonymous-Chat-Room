@@ -71,7 +71,7 @@ TEMPLATES = [
 
 #WSGI_APPLICATION = 'acrs.wsgi.application'
 ASGI_APPLICATION = 'acrs.asgi.application'
-"""
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -80,13 +80,14 @@ CHANNEL_LAYERS = {
         },
     },
 }
-"""
 
+"""
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
+"""
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

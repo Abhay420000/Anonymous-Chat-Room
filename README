@@ -1,0 +1,15 @@
+Anonymous-Chat-Rooms
+    User identity is not stored
+    Any one can use it to chat anonymously
+    Members upto 10 can chat simultaneously 
+    Mongodb is used to store all the chats for analysis
+
+WSGI - Used for handling web pages, create rooms requests(get and post) only
+ASGI - Used for handling chating request(web socket) inside chat rooms
+
+Technologies Used:
+AJAX, Bootstrap, Web Sockets, Jquery, Python, Mongodb, PyMongo, Django, Redis(Channel Layers), Django Channels, JSON
+
+To run:
+docker run -p 6379:6379 -d redis:5
+python manage.py runserver

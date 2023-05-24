@@ -3,6 +3,8 @@ var my_id;
 var room_status = 1;
 var room_code;
 var chatSocket;
+var current_room_size;
+var max_room_size;
 
 const other_person_cb_1 = `
 <div class="row ps-1 msg-pack">
@@ -107,6 +109,9 @@ function s_chat(args){
       'max_room_size': $('.inpele')[3].value,
       'action': "create room",
     }
+
+    max_room_size = $('.inpele')[3].value;
+
   } else if (args == "join_room"){
     //Client Request- Join Room
     data = {
@@ -196,7 +201,7 @@ function s_chat(args){
 }
 
 function start_chatting() {
-  console.log(1);
+  //console.log(1);
   chatSocket = new WebSocket(
       'ws://'
       + window.location.host
@@ -210,13 +215,24 @@ function start_chatting() {
   chatSocket.onmessage = function (msg) {
       data = JSON.parse(msg.data);
       //console.log(data);
+
       if (data["type"] == "chat_message"){
+        //append chat_messages to chat room
         append_msg(data["msg"], get_ctime(), data["name"]);
       } else if(data["type"] == "leave_message"){
+        //append leave_messages to chat room
         lj_msg(data["name"], "leave");
+        current_room_size -= 1;
+        $("#upd_mem")[0].innerHTML = `<i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> `+current_room_size+`/`+max_room_size;
       }
       else if(data["type"] == "join_message"){
+        //append join_messages to chat room
         lj_msg(data["name"], "join");
+
+        //Update member count data
+        current_room_size = data["current_room_size"];
+        max_room_size = data["max_room_size"];
+        $("#upd_mem")[0].innerHTML = `<i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> `+current_room_size+`/`+max_room_size;
       }
       else{
         console.log("error!");

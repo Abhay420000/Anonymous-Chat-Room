@@ -34,7 +34,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
         #sending join message to others
         await self.channel_layer.group_send(
-                self.rcode, {"type": "join_message", "uid": self.uid, "name": self.name}
+                self.rcode, {"type": "join_message", "uid": self.uid, "name": self.name, "max_room_size": data["max_room_size"], "current_room_size": data["current_room_size"]}
             )
 
     async def disconnect(self, close_code):
@@ -44,7 +44,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             
             #Send a leave message to all other members
             await self.channel_layer.group_send(
-                self.rcode, {"type": "leave_message", "uid": self.uid, "name": self.name}
+                self.rcode, {"type": "leave_message", "uid": self.uid, "name": self.name, "current_room_size": -1}
             )
         
         # Leave the room - UnAuthorized Person
