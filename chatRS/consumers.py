@@ -38,9 +38,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
 
     async def disconnect(self, close_code):
+        print(close_code)
         # Leave the room - Authorized Person
         if (close_code != 400):
-            await database_sync_to_async(leave_room)(self.uid, self.rcode)
+            p = await database_sync_to_async(leave_room)(self.uid, self.rcode)
+            print(p)
             
             #Send a leave message to all other members
             await self.channel_layer.group_send(

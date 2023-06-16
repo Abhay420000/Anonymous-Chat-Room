@@ -82,13 +82,15 @@ def create_room(max_room_size):
 def leave_room(id, rcode):
     #check if room exists
     data = check_code(rcode)
-    #print(data)
+    print("Leave Room: ", data)
+    print(id, rcode)
     if (data == False):
         return {"msg": "failed"}
     else:
         for members in data["online_members"]:
             #Check if request is valid
-            if str(members) == id:
+            #print(str(members), data["online_members"])
+            if str(members) == str(id):
                 rooms.update_one(
                     {"_id":rcode}, 
                     {
@@ -99,14 +101,15 @@ def leave_room(id, rcode):
                 
                 name = ""
                 for all_members in data["all_members"]:
-                    if str(all_members[0]) == id:
+                    if str(all_members[0]) == str(id):
                         name = all_members[1]
                         break
-                    
+                
+                #Leave room msg
                 chats.insert_one({
                     "uid": id, 
                     "posted_on": datetime.datetime.now(), 
-                    "msg":f"{name} leaved the room!",
+                    "msg":f"{name} left the room!",
                 })
                 
                 #closing the room if no members are their
@@ -119,8 +122,8 @@ def leave_room(id, rcode):
                     )
                 
                 return {"msg": "success"}
-            else:
-                return {"msg": "failed"}
+            
+        return {"msg": "failed"}
 
 def save_chat(uid, rcode, msg):
     data = check_code(rcode)
