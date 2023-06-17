@@ -290,6 +290,9 @@ function append_msg(msg, time, person){
   else{
     $("#fill_msg").append(other_person_cb_1+time+" "+person+other_person_cb_2+msg+other_person_cb_3);                                                   
   }
+
+  //Scrolling down for the new message
+  $("#fill_msg")[0].scrollTop = $("#fill_msg")[0].scrollHeight;
 }
 
 function my_msg(){
